@@ -25,7 +25,7 @@ SECRET_KEY = '!(_2#0pkzenb9$zsa!p&g2(e65tfmkrjgolgahk3c+^ot00@#1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'server_stats.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'server_stats',
+        'NAME': 'postgres',
         'USER': "postgres",
         'PASSWORD': "postgres",
         'HOST': "db",
@@ -127,6 +127,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -7,3 +7,5 @@ psutil
 psycopg2
 psycopg2-binary
 requests
+django-cors-headers
+
