@@ -24,7 +24,7 @@ from server_api_v1 import views
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Lenarciak Data API",
+        title="Server Stats API",
         default_version='v1',
         description="Test description",
     ),
@@ -34,8 +34,8 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'memory', views.MemoryViewSet)
-router.register(r'process', views.MemoryViewSet)
+router.register(r'memory', views.MemoryViewSet, basename="memory")
+router.register(r'process', views.MemoryViewSet, basename="process")
 
 
 urlpatterns = [
