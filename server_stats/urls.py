@@ -34,6 +34,9 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'memory', views.MemoryViewSet)
+router.register(r'process', views.MemoryViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
