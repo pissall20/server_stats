@@ -2,7 +2,7 @@ import psutil
 from django.contrib.auth.models import User
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
 from server_api_v1.serializers import UserSerializer
 
 
@@ -17,9 +17,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class MemoryViewSet(viewsets.ViewSet):
+class MemoryViewSet(APIView):
 
-    def get(self):
+    def get(self, request):
         values_dict = {
             "virtual": [
                 {"label": "Used", "value": psutil.virtual_memory()._asdict()['used'] / (1024 * 1024)},
@@ -34,7 +34,7 @@ class MemoryViewSet(viewsets.ViewSet):
         return Response(values_dict, status=status.HTTP_200_OK)
 
 
-class ProcessViewSet(viewsets.ViewSet):
+class ProcessViewSet(APIView):
 
     @staticmethod
     def get_process_sorted_by_memory(top_n):
@@ -60,6 +60,6 @@ class ProcessViewSet(viewsets.ViewSet):
             list_of_process_objs = list_of_process_objs[:top_n]
         return list_of_process_objs
 
-    def get(self):
+    def get(self, request):
         process_list = self.get_process_sorted_by_memory(30)
         return Response(process_list, status=status.HTTP_200_OK)

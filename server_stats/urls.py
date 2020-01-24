@@ -34,13 +34,14 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'memory', views.MemoryViewSet, basename="memory")
-router.register(r'process', views.MemoryViewSet, basename="process")
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path(r'memory', views.MemoryViewSet.as_view()),
+    path(r'process', views.ProcessViewSet.as_view()),
     path('doc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
