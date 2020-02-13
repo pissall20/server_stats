@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from server_api_v1.serializers import UserSerializer
 
 
@@ -63,3 +64,28 @@ class ProcessViewSet(APIView):
     def get(self, request):
         process_list = self.get_process_sorted_by_memory(30)
         return Response(process_list, status=status.HTTP_200_OK)
+
+
+class DiskViewSet(APIView):
+
+    @staticmethod
+    def get_storage_stats():
+        disk_usage = {
+            k: (v / (1024 * 1024)) if k != "percent" else v
+            for k, v in psutil.disk_usage("/")._asdict().items()
+            if k != "percent"
+        }
+        disk_io = dict()
+        for k, v in psutil.disk_io_counters()._asdict().items():
+            if "bytes" in k:
+                disk_io[k] = (v / (1024 * 1024))
+            elif "time":
+                disk_io[k] = (v / 1000)
+
+        return {
+            "disk_usage": disk_usage,
+            "disk_io": disk_io
+        }
+
+    def get(self, request):
+        return Response(self.get_storage_stats(), status=status.HTTP_200_OK)
