@@ -13,12 +13,12 @@ class MemoryViewSet(APIView):
             "virtual": [
                 {"label": "Used", "value": psutil.virtual_memory()._asdict()['used'] / (1024 * 1024)},
                 {"label": "Free", "value": psutil.virtual_memory()._asdict()['free'] / (1024 * 1024)},
-                {"label": "Percent", "value": psutil.virtual_memory()._asdict()['percent'] / (1024 * 1024)}
+                {"label": "Percent", "value": psutil.virtual_memory()._asdict()['percent']}
             ],
             "swap": [
                 {"label": "Used", "value": psutil.swap_memory()._asdict()['used'] / (1024 * 1024)},
                 {"label": "Free", "value": psutil.swap_memory()._asdict()['free'] / (1024 * 1024)},
-                {"label": "Percent", "value": psutil.swap_memory()._asdict()['percent'] / (1024 * 1024)}
+                {"label": "Percent", "value": psutil.swap_memory()._asdict()['percent']}
             ]
         }
 
