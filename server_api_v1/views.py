@@ -3,7 +3,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 # Create your views here.
 
 
@@ -59,17 +58,19 @@ class DiskViewSet(APIView):
 
     @staticmethod
     def get_storage_stats():
-        disk_usage = {
-            k: (v / (1024 * 1024)) if k != "percent" else v
-            for k, v in psutil.disk_usage("/")._asdict().items()
-            if k != "percent"
-        }
-        disk_io = dict()
+        disk_usage = list()
+        for k, v in psutil.disk_usage("/")._asdict().items():
+            if k != "percent":
+                disk_usage.append({"label": k, "value": (v / (1024 * 1024))})
+            else:
+                disk_usage.append({"label": k, "value": v})
+
+        disk_io = list()
         for k, v in psutil.disk_io_counters()._asdict().items():
             if "bytes" in k:
-                disk_io[k] = (v / (1024 * 1024))
+                disk_io.append({"label": k, "value": (v / (1024 * 1024))})
             elif "time":
-                disk_io[k] = (v / 1000)
+                disk_io.append({"label": k, "value": (v / 1000)})
 
         return {
             "disk_usage": disk_usage,
