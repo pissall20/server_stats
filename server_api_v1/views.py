@@ -11,14 +11,12 @@ class MemoryViewSet(APIView):
     def get(self, request):
         values_dict = {
             "virtual": [
-                {"label": "Used", "value": psutil.virtual_memory()._asdict()['used'] / (1024 * 1024)},
-                {"label": "Free", "value": psutil.virtual_memory()._asdict()['free'] / (1024 * 1024)},
-                {"label": "Percent", "value": psutil.virtual_memory()._asdict()['percent']}
+                {"label": "Used", "value": psutil.virtual_memory()._asdict()['percent']},
+                {"label": "Free", "value": 100 - psutil.virtual_memory()._asdict()['percent']},
             ],
             "swap": [
-                {"label": "Used", "value": psutil.swap_memory()._asdict()['used'] / (1024 * 1024)},
-                {"label": "Free", "value": psutil.swap_memory()._asdict()['free'] / (1024 * 1024)},
-                {"label": "Percent", "value": psutil.swap_memory()._asdict()['percent']}
+                {"label": "Used", "value": psutil.swap_memory()._asdict()['percent']},
+                {"label": "Free", "value": 100 - psutil.swap_memory()._asdict()['percent']},
             ]
         }
 
@@ -62,10 +60,9 @@ class DiskViewSet(APIView):
     def get_storage_stats():
         disk_usage = list()
         for k, v in psutil.disk_usage("/")._asdict().items():
-            if k != "percent":
-                disk_usage.append({"label": k, "value": (v / (1024 * 1024))})
-            else:
-                disk_usage.append({"label": k, "value": v})
+            if k == "percent":
+                disk_usage.append({"label": "Used", "value": v})
+                disk_usage.append({"label": "Free", "value": 100 - v})
 
         disk_io = list()
         for k, v in psutil.disk_io_counters()._asdict().items():
